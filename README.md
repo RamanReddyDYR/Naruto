@@ -191,4 +191,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ---
 
-**Built with ❤️ using IBM Watson, Granite AI, and Streamlit**
+**Built with using IBM Watson, Granite AI, and Streamlit**
