@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Finance Chatbot - Powered by IBM Watson & Granite AI</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="welcome-screen">
+        <div class="container">
+            <div class="welcome-content">
+                <h1 class="welcome-title">Personal Finance Chatbot</h1>
+                <p class="welcome-subtitle">Powered by IBM Watson & Granite AI</p>
+                <div class="welcome-description">
+                    <p>Get personalized financial guidance tailored to your lifestyle. Our AI-powered chatbot provides:</p>
+                    <ul class="feature-list">
+                        <li>🎯 Personalized Financial Advice</li>
+                        <li>📊 AI-Generated Budget Analysis</li>
+                        <li>💡 Smart Spending Insights</li>
+                        <li>🎓 Demographic-Aware Communication</li>
+                    </ul>
+                </div>
+                <button id="get-started-btn" class="btn btn--primary btn--lg">Get Started</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Setup Screen -->
+    <div id="profile-screen" class="profile-screen hidden">
+        <div class="container">
+            <div class="profile-content">
+                <h2>Set Up Your Profile</h2>
+                <p class="profile-subtitle">Help us personalize your financial guidance</p>
+                
+                <form id="profile-form" class="profile-form">
+                    <div class="form-group">
+                        <label class="form-label">I am a:</label>
+                        <div class="user-type-selector">
+                            <button type="button" id="student-btn" class="user-type-btn" data-type="student">
+                                <div class="user-type-icon">🎓</div>
+                                <div class="user-type-label">Student</div>
+                                <div class="user-type-desc">Budget-friendly advice and simple strategies</div>
+                            </button>
+                            <button type="button" id="professional-btn" class="user-type-btn" data-type="professional">
+                                <div class="user-type-icon">💼</div>
+                                <div class="user-type-label">Professional</div>
+                                <div class="user-type-desc">Advanced strategies and investment guidance</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="age" class="form-label">Age</label>
+                        <input type="number" id="age" class="form-control" min="16" max="100" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="income" class="form-label">Monthly Income ($)</label>
+                        <input type="number" id="income" class="form-control" min="0" step="100" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="occupation" class="form-label">Occupation</label>
+                        <input type="text" id="occupation" class="form-control" required>
+                    </div>
+
+                    <button type="submit" class="btn btn--primary btn--full-width" disabled id="continue-btn">Continue to Chatbot</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="main-app" class="main-app hidden">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="header-left">
+                        <h1 class="app-title">Personal Finance Chatbot</h1>
+                        <div class="user-profile-display">
+                            <span id="user-profile-text"></span>
+                            <button id="edit-profile-btn" class="btn--sm">Edit Profile</button>
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <button id="toggle-budget-btn" class="btn btn--outline">
+                            <span id="toggle-text">Budget Calculator</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="app-body">
+            <div class="container">
+                <div class="app-layout">
+                    <!-- Chat Section -->
+                    <div id="chat-section" class="chat-section">
+                        <div class="chat-container">
+                            <!-- Quick Actions -->
+                            <div class="quick-actions">
+                                <h3>Quick Topics</h3>
+                                <div class="quick-buttons">
+                                    <button class="quick-btn" data-topic="saving">💰 Saving Tips</button>
+                                    <button class="quick-btn" data-topic="investing">📈 Investment Advice</button>
+                                    <button class="quick-btn" data-topic="budgeting">📊 Budget Help</button>
+                                </div>
+                            </div>
+
+                            <!-- Chat Messages -->
+                            <div class="chat-messages" id="chat-messages">
+                                <div class="message bot-message">
+                                    <div class="message-content">
+                                        <p>Hello! I'm your personal finance assistant. I'm here to help you with budgeting, saving, investing, and all your financial questions. How can I help you today?</p>
+                                    </div>
+                                    <div class="message-time">Now</div>
+                                </div>
+                            </div>
+
+                            <!-- Typing Indicator -->
+                            <div class="typing-indicator hidden" id="typing-indicator">
+                                <div class="message bot-message">
+                                    <div class="message-content">
+                                        <div class="typing-dots">
+                                            <div class="dot"></div>
+                                            <div class="dot"></div>
+                                            <div class="dot"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Chat Input -->
+                            <div class="chat-input-container">
+                                <div class="chat-input-wrapper">
+                                    <input type="text" id="chat-input" class="chat-input" placeholder="Ask me about your finances...">
+                                    <button id="send-btn" class="send-btn">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                                            <polygon points="22,2 15,22 11,13 2,9"></polygon>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Budget Calculator Section -->
+                    <div id="budget-section" class="budget-section hidden">
+                        <div class="budget-container">
+                            <h3>Budget Calculator</h3>
+                            
+                            <!-- Budget Input Form -->
+                            <div class="budget-form">
+                                <div class="income-section">
+                                    <h4>Monthly Income</h4>
+                                    <input type="number" id="budget-income" class="form-control" placeholder="Enter your monthly income">
+                                </div>
+
+                                <div class="expenses-section">
+                                    <h4>Monthly Expenses</h4>
+                                    <div class="expense-inputs">
+                                        <div class="expense-item">
+                                            <label>Housing</label>
+                                            <input type="number" data-category="Housing" class="expense-input form-control" placeholder="Rent, mortgage">
+                                        </div>
+                                        <div class="expense-item">
+                                            <label>Food</label>
+                                            <input type="number" data-category="Food" class="expense-input form-control" placeholder="Groceries, dining">
+                                        </div>
+                                        <div class="expense-item">
+                                            <label>Transportation</label>
+                                            <input type="number" data-category="Transportation" class="expense-input form-control" placeholder="Car, gas, transit">
+                                        </div>
+                                        <div class="expense-item">
+                                            <label>Entertainment</label>
+                                            <input type="number" data-category="Entertainment" class="expense-input form-control" placeholder="Movies, hobbies">
+                                        </div>
+                                        <div class="expense-item">
+                                            <label>Utilities</label>
+                                            <input type="number" data-category="Utilities" class="expense-input form-control" placeholder="Electric, internet">
+                                        </div>
+                                        <div class="expense-item">
+                                            <label>Healthcare</label>
+                                            <input type="number" data-category="Healthcare" class="expense-input form-control" placeholder="Insurance, medical">
+                                        </div>
+                                        <div class="expense-item">
+                                            <label>Education</label>
+                                            <input type="number" data-category="Education" class="expense-input form-control" placeholder="Tuition, books">
+                                        </div>
+                                        <div class="expense-item">
+                                            <label>Other</label>
+                                            <input type="number" data-category="Other" class="expense-input form-control" placeholder="Miscellaneous">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button id="calculate-budget-btn" class="btn btn--primary btn--full-width">Analyze My Budget</button>
+                            </div>
+
+                            <!-- Budget Analysis -->
+                            <div id="budget-analysis" class="budget-analysis hidden">
+                                <div class="budget-summary">
+                                    <div class="summary-item">
+                                        <div class="summary-label">Total Income</div>
+                                        <div class="summary-value" id="total-income">$0</div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <div class="summary-label">Total Expenses</div>
+                                        <div class="summary-value" id="total-expenses">$0</div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <div class="summary-label">Net Savings</div>
+                                        <div class="summary-value" id="net-savings">$0</div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <div class="summary-label">Savings Rate</div>
+                                        <div class="summary-value" id="savings-rate">0%</div>
+                                    </div>
+                                </div>
+
+                                <!-- Chart Container -->
+                                <div class="chart-container" style="position: relative; height: 300px;">
+                                    <canvas id="budget-chart"></canvas>
+                                </div>
+
+                                <!-- AI Insights -->
+                                <div class="ai-insights">
+                                    <h4>💡 AI Insights & Recommendations</h4>
+                                    <div id="budget-insights" class="insights-content"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
