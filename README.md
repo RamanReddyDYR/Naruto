@@ -185,8 +185,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 👥 Team
 
-- **Project Lead**: [Your Name]
-- **AI/ML Engineer**: [Team Member]
+- **Project Lead**: [L.RAMAN REDDY ]
+- **Engineer**: [MANIKANTA GOUD , SHIVA KUMAR ]
 - **Financial Advisor**: [Domain Expert]
 
 ---
